@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Set the viewport properties for responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote of the Day</title>
+    <!-- Link to an external stylesheet for styling -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Create a container for the quote display -->
+    <div class="quote-box">
+        <!-- Title for the quote section -->
+        <h2>Quote of the Day</h2>
+        <!-- Placeholder for the quote, initially set to "Loading..." -->
+        <blockquote id="quote">Loading...</blockquote>
+        <!-- Placeholder for the author, initially set to "Loading..." -->
+        <span id="author">Loading...</span>
+        <!-- Container for buttons -->
+        <div class="button-container">
+            <!-- Button to fetch a new quote when clicked -->
+            <button onclick="getquote(api_url)">New Quote</button>
+            <!-- Button to post the current quote to Twitter when clicked -->
+            <button onclick="post()"><img src="twitternewlogo.png">Post</button>
+        </div>
+    </div>
+
+    <!-- JavaScript code for fetching and displaying quotes -->
+    <script>
+        // Get references to the quote and author elements in the HTML
+        const quote = document.getElementById("quote");
+        const author = document.getElementById("author");
+
+        // Define the API endpoint for fetching random quotes
+        const api_url = "https://api.quotable.io/random";
+
+        // Function to fetch and display a new quote
+        async function getquote(url){
+            // Send a request to the API and wait for the response
+            const response = await fetch(url);
+            // Parse the response JSON data
+            const data = await response.json();
+
+            // Update the HTML elements with the fetched quote and author
+            quote.innerHTML = data.content;
+            author.innerHTML = data.author;
+        }
+
+        // Initial call to fetch and display a quote when the page loads
+        getquote(api_url);
+
+        // Function to open a Twitter sharing window with the current quote and author
+        function post(){
+            // Construct the Twitter sharing URL with the quote and author
+            window.open("https://twitter.com/intent/tweet?text=" + quote.innerHTML + "-- by " + author.innerHTML, "Post Window", "width=600", "height=300");
+        }
+    </script>
+</body>
+</html>
